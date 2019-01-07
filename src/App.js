@@ -1,28 +1,52 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+import { BrowserRouter, Route, withRouter } from 'react-router-dom';
+
 import './App.css';
+import RoutePaths from './route/RoutePaths';
+import Blog from './blogs/Blog';
+import Home from './home/Home';
+import {bindActionCreators} from'redux';
+import {connect} from 'react-redux';
+
+import {Link} from 'react-router-dom';
+
+import * as postActions from './redux/actions/postActions.js';
+import * as trendingActions from './redux/actions/trendingActions';
 
 class App extends Component {
+
+  componentDidMount(){
+    this.props.postActions.getAllPosts();
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <BrowserRouter>
+        <div>
+          <header className="Appheader">
+            <Link to={RoutePaths.home}>Home</Link>
+            <Link to={RoutePaths.trending}>Trending</Link>
+            <Link to={RoutePaths.blogs}>blog</Link>
+          </header>
+          <Route path={RoutePaths.blogs}
+            component={Blog} />
+            <Route path={RoutePaths.home}
+            component={Home} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return state;
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    postActions: bindActionCreators(postActions, dispatch),
+    authorsActions: bindActionCreators(trendingActions, dispatch),
+  };
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App));
