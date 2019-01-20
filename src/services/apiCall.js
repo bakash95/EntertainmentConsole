@@ -12,7 +12,7 @@ const apiCall = (route, method = 'GET', body = {}) => {
         if (method !== 'GET') {
             requestDetails.body = JSON.stringify(body);
         }
-        const serverURL = 'http://localhost:8080';
+        const serverURL = 'http://entertainmentconsole-env-1.i3dkqynri2.us-east-1.elasticbeanstalk.com';
 
         const handleErrors = (response) => {
             if (response.ok) {
